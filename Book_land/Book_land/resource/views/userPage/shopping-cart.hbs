@@ -1,0 +1,203 @@
+<div class="page-content">
+	<!-- inner page banner -->
+	<div class="dz-bnr-inr overlay-secondary-dark dz-bnr-inr-sm"
+		style="background-image:url(/images/background/bg3.jpg);">
+		<div class="container">
+			<div class="dz-bnr-inr-entry">
+				<h1>Cart</h1>
+				<nav aria-label="breadcrumb" class="breadcrumb-row">
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html"> Home</a></li>
+						<li class="breadcrumb-item">Cart</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<!-- inner page banner End-->
+
+	<!-- contact area -->
+	<section class="content-inner shop-account">
+		<!-- Product -->
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-lg-12">
+					<div class="table-responsive">
+						<table class="table check-tbl" id="tabela">
+							<thead>
+								<tr>
+									<th>Select</th>
+									<th>Product</th>
+									<th>Product name</th>
+									<th>Unit Price($)</th>
+									<th>Quantity</th>
+									<th>Total($)</th>
+									<th class="text-end">Close</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{#each cart}}
+								<tr>
+									<td><input class="form-check-input" type="checkbox" id="checkbox1"></td>
+									<td class="product-item-img"><img src="/images/products/{{this.image}}" alt=""
+											id="{{sum @index 1}}"
+											style="border-style: none;height: 99.24px;max-width: 65.9px;object-fit: cover;vertical-align: middle;">
+									</td>
+									<td class="product-item-name">{{this.product_name}}</td>
+									<td class="product-item-price">{{this.price_output}}</td>
+									<td class="product-item-quantity">
+										<div class="quantity btn-quantity style-1 me-3">
+											<input id="{{sum @index 1}}" class="upppp" type="text"
+												value="{{this.product_quantity}}" name="demo_vertical2" readonly />
+											<input class="id" type="hidden" value="{{this.product_id}}" />
+										</div>
+									</td>
+									<td class="product-item-totle" id="total">{{mul this.price_output
+										this.product_quantity}}</td>
+									<td class="product-item-close"><a href="" data-bs-toggle="modal"
+											data-bs-target="#exampleModal" class="ti-close"
+											data-id="{{this.product_id}}"></a></td>
+								</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+
+				</div>
+				<div class="col-lg-6">
+					<div class="widget">
+						<h4 class="widget-title">Cart Subtotal</h4>
+						<table class="table-bordered check-tbl m-b25" id="last">
+							<tbody>
+								<tr>
+									<td>Total</td>
+									<td>$0</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="form-group m-b25">
+							<button class="btn btn-primary btnhover" id="save"><i
+									class="flaticon-shopping-cart-1 m-r10"></i>Proceed to Checkout</button>
+							{{!-- <a href="" class="btn btn-primary btnhover" id="save"><i
+									class="flaticon-shopping-cart-1 m-r10"></i>Proceed to Checkout</a> --}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Product END -->
+	</section>
+	<form name="check-quantity" method="post" action="/check">
+		<input type="hidden" name="detail" id="dataa">
+	</form>
+	<form name="delete-product" method="post"></form>
+	<input type="hidden" id="announ" value="{{#each errors}}{{this}} {{/each}}">
+	<!-- contact area End-->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					Do you want to delete this product from shopping-cart ?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="deletebtn-product">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var productId;
+		var deletebtn = document.getElementById('deletebtn-product');
+		var deleteform = document.forms['delete-product']
+		$('#exampleModal').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget)
+			productId = button.data('id')
+		})
+		deletebtn.onclick = function () {
+			deleteform.action = '/shopping-cart/delete/' + productId;
+			deleteform.submit();
+		}
+		if (document.getElementById('announ').value != '') {
+			Swal.fire({
+				text: document.getElementById('announ').value,
+				icon: 'error',
+				timer: 1000,
+				showConfirmButton: false,
+			}).then(function () {
+				window.location = window.location		
+			})
+			
+		}
+		$('#save').on('click', function () {
+			if (total == 0) {
+				Swal.fire({
+					text: 'Please choose product !',
+					icon: 'error',
+					timer: 800,
+					showConfirmButton: false,
+				})
+			} else {
+				account = JSON.stringify(data);
+				document.getElementById('dataa').value = account
+				sessionStorage.clear();
+				sessionStorage.setItem('myArray', account);
+				//location.href = '/checkout';
+				//console.log('ok')
+				var checkform = document.forms['check-quantity']
+				checkform.submit()
+			}
+		});
+	})
+</script>
+<script>
+	var checkbox = document.getElementsByClassName('form-check-input');
+	for (i = 0; i < checkbox.length; i++) {
+		checkbox[i].addEventListener('change', (event) => {
+			if (event.currentTarget.checked) {
+				all()
+			} else {
+				all()
+			}
+		})
+	}
+	var data = []
+	var total = 0
+	function all() {
+		data = []
+		var rowCount = document.getElementById("tabela").rows.length;
+		for (var i = 1; i < rowCount; i++) {
+			var obj = {
+				'id': document.getElementById("tabela").rows[i].cells[4].querySelector('.id').value,
+				'check': document.getElementById("tabela").rows[i].cells[0].querySelector('input').checked,
+				'price': Number(document.getElementById("tabela").rows[i].cells[3].innerText),
+				'quantity': document.getElementById("tabela").rows[i].cells[4].querySelector('input').value,
+				'image': document.getElementById(i).src,
+				'name': document.getElementById("tabela").rows[i].cells[2].innerText,
+				'total': document.getElementById("tabela").rows[i].cells[5].innerText
+			};
+			if (obj.check == true) {
+				data.push(obj);
+			}
+		}
+		console.log(data)
+		total = 0
+		for (var i = 0; i < data.length; i++) {
+			total += Number(data[i].total)
+		}
+		document.getElementById("last").rows[0].cells[1].innerHTML = total + '$';
+	}
+
+</script>

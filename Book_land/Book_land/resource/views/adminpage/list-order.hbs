@@ -1,0 +1,173 @@
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+
+        <div class="search-box">
+            <form action="/admin/list-order/search" name="myInput" method="get"><i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here..." name="idorder" id="myInput">   
+            </form>
+        </div>
+
+        <img src="images/profile.jpg" alt="">
+    </div>
+
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                <span class="text">Order</span>
+
+            </div>
+
+            <div>
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table "
+                            style="width:100% ; text-align : center ; color:var(--text-color) !important">
+                            <thead>
+                                <tr>
+
+                                    <th>Count</th>
+                                    <th>Order Id</th>
+                                    <th>Date Order</th>
+                                    <th>Status</th>
+                                    <th>Total($)</th>
+                                    <th>Update By</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="myTable">
+                                {{#each order}}
+                                <tr>
+                                    <td>{{sum @index 1}}</td>
+                                    <td>{{this.order_id}}</td>
+                                    <td>{{this.create_at}}</td>
+                                    <td>
+                                        <select name="status" id="">
+                                            <option value="{{this.status}}" selected hidden></option>
+                                            <option value="2" >Packed</option>
+                                            <option value="3" >Shipping</option>
+                                            <option value="4" >Completed</option>
+                                            <option value="0" >Canceled</option>
+                                        </select>
+                                    </td>
+                                    <input type="hidden" class="status" value="{{this.status}}">
+                                    <td>{{this.total}}</td>
+                                    <td>{{this.update_by}}</td>
+                                    <td>
+                                        <a href="/admin/order/{{this.order_id}}" class="btn btn-link" ><i
+                                                class="fa-solid fa-eye"></i></a>
+                                        {{#iff this.status '==' 1}}
+                                        <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                            data-idd="{{../this.order_id}}" data-bs-target="#ChangeStatus"><i
+                                                class="fa fa-exchange" ></i></a>
+                                        {{/iff }}
+                                        {{#iff this.status '==' 2}}
+                                        <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                            data-idd="{{../this.order_id}}" data-bs-target="#ChangeStatus"><i
+                                                class="fa fa-exchange" ></i></a>
+                                        {{/iff }}
+                                        {{#iff this.status '==' 3}}
+                                        <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                            data-idd="{{../this.order_id}}" data-bs-target="#ChangeStatus"><i
+                                                class="fa fa-exchange" ></i></a>
+                                        {{/iff }}
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="ChangeStatus" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Change Status</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to change order'status ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="ChangeStatusbtn">Change</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <input type="hidden" id="annou" value="{{#each success}}{{this}}{{/each}}">
+            <form action="" name="ChangeStatus-form" method="post">
+            <input type="hidden" name="status" id="statusOrder">
+            </form>
+            <input type="hidden" value="{{total}}" id="total">
+            <input type="hidden" value="{{page}}" id="page">
+            <input type="hidden" value="{{name}}" id="name_link">
+            <input type="hidden" value="{{user}}" id="user">
+            <div class="pagination">
+                <ul>
+                    <!--pages or li are comes from javascript -->
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var OrderId;
+        var ChangeStatusbtn = document.getElementById('ChangeStatusbtn');
+        var ChangeStatusform = document.forms['ChangeStatus-form']
+        $('#ChangeStatus').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            OrderId = button.data('idd')
+        })
+        ChangeStatusbtn.onclick = function () {
+            ChangeStatusform.action = '/admin/order/change/' + OrderId;
+            ChangeStatusform.submit();
+        }
+        if (document.getElementById("annou").value != '') {
+            Swal.fire({
+                text: document.getElementById('annou').value,
+                icon: 'success',
+                timer: 1000,
+                showConfirmButton: false,
+            }).then(function () {
+                window.location = window.location
+            })
+        }
+    })
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var addbtn = document.getElementsByClassName('status');
+        for (var i = 0; i < addbtn.length; i++) {
+            if (addbtn[i].value == '1') {
+                document.getElementsByName('status')[i].options[0].innerHTML  = 'Waiting for order confirmation'
+            }
+            if (addbtn[i].value == '2') {
+                document.getElementsByName('status')[i].options[0].innerHTML = 'Packed'
+            }
+            if (addbtn[i].value == '3') {
+                document.getElementsByName('status')[i].options[0].innerHTML = 'Shipping'
+            }
+            if (addbtn[i].value == '4') {
+                document.getElementsByName('status')[i].options[0].innerHTML = 'Completed'
+            }
+            if (addbtn[i].value == '0') {
+                document.getElementsByName('status')[i].options[0].innerHTML = 'Canceled'
+            }
+        }
+        $("table tr a").on('click', function(e){
+           var a = $(this).closest('td').parent()[0].sectionRowIndex;
+          // document.getElementById("myTable").rows[a].cells[3].querySelector('select').value
+           document.getElementById('statusOrder').value = document.getElementById('statusOrder').value = document.getElementById("myTable").rows[a].cells[3].querySelector('select').value
+        });
+    })
+    
+</script>

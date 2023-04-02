@@ -1,0 +1,108 @@
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+    </div>
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                {{#each order}}
+                <span class="text">Order Id : {{this.order_id}}</span>
+                {{/each}}
+
+            </div>
+
+            <div>
+                <div class="col-lg-11">
+                    <div class="">
+                        <div class="table-responsive">
+                            <table class="table " style="color:var(--text-color);border-color:var(--text-color)">
+                                <thead>
+                                    <tr>
+                                        <th>Cardinal numbers</th>
+                                        <th>Product Name</th>
+                                        <th>Image</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                    {{#each orderProductDetail}}
+                                    <tr>
+                                        <td>{{sum @index 1}}</td>
+                                        <td>{{this.product_name}}</td>
+                                        <td class="product-item-img"><img src="/images/products/{{this.image}}" alt=""
+                                                style="border-style: none;height: 99.24px;max-width: 65.9px;object-fit: cover;vertical-align: middle;">
+                                        </td>
+                                        <td>{{this.quantity}}</td>
+                                        <td>{{this.price_output}}</td>
+                                        <td></td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                        </p>
+                    </div>
+                    {{#each orderDetail}}
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <table class="table-bordered check-tbl mb-4"
+                                style="color: var(--text-color) !important;border-color:var(--text-color)">
+                                <tbody>
+                                    <tr>
+                                        <td>Order Subtotal</td>
+                                        <td class="product-price">${{this.total}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping</td>
+                                        <td>Free Shipping</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery</td>
+                                        <td class="product-price">{{this.delivery}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Payment</td>
+                                        <td class="product-price">{{this.payment}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td class="product-price-total">${{this.total}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <table class="table-bordered check-tbl mb-4"
+                                style="color:var(--text-color);border-color:var(--text-color)">
+
+                                <tr>
+                                    <td>Name</td>
+                                    <td class="product-price">{{this.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Number phone</td>
+                                    <td>{{this.phone}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td class="product-price">{{this.content}},{{this.address}}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var rowCount = document.getElementById("myTable").rows.length;
+    for (var i = 0; i < rowCount; i++) {
+        document.getElementById("myTable").rows[i].cells[5].innerHTML = Number(document.getElementById("myTable").rows[i].cells[3].innerHTML) * Number(document.getElementById("myTable").rows[i].cells[4].innerHTML)
+    }
+</script>

@@ -1,0 +1,199 @@
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+        <img src="images/profile.jpg" alt="">
+    </div>
+
+    <div class="dash-content">
+        <div class="">
+            <div class="title">
+                <span class="text">Add Input Order</span>
+            </div>
+
+            <div>
+                <form action="" class="shop-form" encType="multipart/form-data">
+
+                    <div class="widget">
+                        <div class="form-group" placeholder="Pick a state...">
+                            <select class="form-control" id="mySelect">
+                                <option value="" id="sel">Select a state...</option>
+                                {{#each product}}
+                                <option value="{{this.product_id}}">{{this.product_name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="id" id="id" class="form-control" placeholder="Id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Name" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="price" id="price" class="form-control" placeholder="Price Input"
+                                readonly>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="stock" id="stock" class="form-control" placeholder="Stock"
+                                readonly>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Quantity"
+                                required>
+                        </div>
+                        <button type="button" class="btn btn-primary btnhover" id="add" onclick="addTo()"
+                            style="float: right;">Add product</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                <span class="text">Recent Activity</span>
+            </div>
+            <div>
+                <div class="widget">
+                    <div class="form-group">
+                        <table class="table input"
+                            style="width:100% ; text-align : center ; color:var(--text-color) !important" id="input">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price($)</th>
+                                    <th>Total($)</th>
+                                    <th>Stock After Input</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clear">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <table style="width:100% ; text-align : center ; color:var(--text-color) !important" id="total">
+                            <thead>
+                                <tr>
+                                    <th>Sum($)</th>
+                                    <td colspan="3">0</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <form action="/admin/input-order" name="input-order" method="post">
+                        <input type="hidden" id="detail" name="detail_input">
+                        <input type="hidden" id="total-order" name="total">
+                        <input type="text" name="note" placeholder="Note">
+                    </form>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btnhover" id="submit"
+                            style="margin-top: 20px;position: relative;left: 87%;" >Save Order
+                            Input</button>
+                        <button type="submit" class="btn btn-primary btnhover"
+                            style="margin-top: 20px;position: relative;left: 60%;" onclick="reset()">Reset Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var a = document.getElementById("mySelect").value
+        $('select').selectize({
+            sortField: 'text',
+            onChange: function (value) {
+                a = value;
+            }
+        });
+        $("#mySelect").on('change', function () {
+            $.get("http://localhost:5000/admin/input-order/" + a, function (data, status) {
+                document.getElementById("id").value = data[0].product_id
+                document.getElementById("name").value = data[0].product_name
+                document.getElementById("price").value = data[0].price_input
+                document.getElementById("stock").value = data[0].quantity
+                document.getElementById("quantity").value = 1
+            });
+        });
+    })
+</script>
+<script>
+    let data = [];
+    function addTo() {
+        var tablee = document.getElementById("input");
+        var tableHeaderRowCount = 1;
+        var totalRowCount = tablee.rows.length;
+        for (let i = tableHeaderRowCount; i < totalRowCount; i++) {
+            tablee.deleteRow(tableHeaderRowCount)
+        }
+        var obj = {
+            'id': document.getElementById("id").value,
+            'name': document.getElementById("name").value,
+            'price': Number(document.getElementById("price").value),
+            'quantity': Number(document.getElementById("quantity").value),
+            'total': Number(document.getElementById("quantity").value) + Number(document.getElementById("stock").value)
+        };
+        if (!data.some(e => e['id'] == obj['id']))
+            // add new
+            data.push(obj);
+        else {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].id == obj.id) {
+                    data[i].quantity += obj.quantity
+                    data[i].total += obj.quantity
+                }
+            }
+        }
+        console.log(data)
+        var total = 0
+        for (let i = 0; i < data.length; i++) {
+            total += (data[i].quantity * data[i].price)
+        }
+        let table = document.querySelector(".input");
+        for (let obj of data) {
+            let tr = table.insertRow();
+            tr.insertCell().textContent = obj.id;
+            tr.insertCell().textContent = obj.name;
+            tr.insertCell().textContent = obj.quantity;
+            tr.insertCell().textContent = obj.price;
+            tr.insertCell().textContent = obj.quantity * obj.price;
+            tr.insertCell().textContent = obj.total;
+        }
+        document.getElementById("total").rows[0].cells[1].innerHTML = total;
+    }
+    function reset() {
+        data = []
+        var tablee = document.getElementById("input");
+        var tableHeaderRowCount = 1;
+        var totalRowCount = tablee.rows.length;
+        for (let i = tableHeaderRowCount; i < totalRowCount; i++) {
+            tablee.deleteRow(tableHeaderRowCount)
+        }
+        document.getElementById("total").rows[0].cells[1].innerHTML = 0;
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var submitbtn = document.getElementById('submit');
+        var submitform = document.forms['input-order']
+        submitbtn.onclick = function () {
+        if(Number(document.getElementById("total").rows[0].cells[1].innerHTML) == 0){
+            Swal.fire({
+					text: 'Please add product !',
+					icon: 'error',
+					timer: 1000,
+					showConfirmButton: false,
+				})
+        }else{
+            var a = JSON.stringify(data)
+            document.getElementById("detail").value = a;
+            document.getElementById("total-order").value = Number(document.getElementById("total").rows[0].cells[1].innerText);
+            console.log(document.getElementById("total-order").value)
+            submitform.submit();
+        }
+        }
+    })
+</script>

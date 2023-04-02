@@ -1,0 +1,153 @@
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+
+        <div class="search-box">
+            <form action="/admin/publish/search" name="myInput" method="get"><i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here..." name="name" id="myInput">
+            </form>
+        </div>
+
+        <img src="images/profile.jpg" alt="">
+    </div>
+
+    <div class="dash-content">
+        <div class="overview">
+            <div class="title">
+                <i class="uil uil-tachometer-fast-alt"></i>
+                <span class="text">Update Product</span>
+            </div>
+
+            <div>
+                <form action="/admin/product/update" class="shop-form" method="post" encType="multipart/form-data">
+
+                    <div class="widget">
+                        {{#each detail_product}}
+                        <div class="form-group">
+                            <input type="text" name="isbn" class="form-control" placeholder="Isbn*"
+                                value="{{this.isbn}}" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="name" class="form-control" placeholder="Name product*"
+                                value="{{this.product_name}}" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="description" class="form-control" placeholder="Description*"
+                                value="{{this.description}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Choose Image</label>
+                            <input type="file" name="avatar" accept="image/*" value="{{this.image}}">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="price_input" class="form-control" placeholder="Price Input*"
+                                value="{{this.price_input}}" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="price_output" class="form-control" placeholder="Price Output*"
+                             oninput="price_displayy()" id="price_output"   value="{{this.price_output}}" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="percent_sale" class="form-control" placeholder="Percent Sale*"
+                              oninput="price_displayy()" id="percent_sale" value="{{this.percent_sale}}" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="price_display" class="form-control" placeholder="Price Display*"
+                                value="{{this.price_display}}" id="price_display" required>
+                        </div>
+                        <div class="form-group">
+                            <select name="genre_id" class="form-control">
+                                <option value="{{this.genre_id}}" selected hidden>{{this.genre_name}}</option>
+                                {{#each ../genre}}
+                                <option value="{{this.genre_id}}">{{this.genre_name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select name="publish_id" class="form-control">
+                                <option value="{{this.publish_id}}" selected hidden>{{this.publish_name}}</option>
+                                {{#each ../publish}}
+                                <option value="{{this.publish_id}}">{{this.publish_name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" id="time" class="form-control" placeholder="Time Public*"
+                                value="{{../time}}" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="page" class="form-control" placeholder="Page*"
+                                value="{{this.pages}}" required>
+                        </div>
+                        <div class="form-group">
+                            <select name="language" class="form-control">
+                                <option value="{{this.language}}" selected hidden>{{this.language}}</option>
+                                <option value="Tiếng việt">Tiếng việt</option>
+                                <option value="English">English</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="id" class="form-control" placeholder="id_product"
+                                value="{{this.product_id}}">
+                        </div>
+                        {{/each}}
+                        <div class="form-group" id="author">
+                            <Label>Select Author :</Label>
+                            {{#each product_author}}
+                            <select class="form-control author" id="form">
+                                <option value="{{this.author_id}}" selected hidden>{{this.author_name}}</option>
+                                {{#each ../author}}
+                                <option value="{{this.author_id}}">{{this.author_name}}</option>
+                                {{/each}}
+                            </select>
+                            <br>
+                            {{/each}}
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="author_id" class="form-control" id="AllIdAuthor">
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="time_public" name="time_public" class="form-control"
+                                placeholder="Time Public*" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="saveAuthor">Save product</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var publishId;
+        var deletebtn = document.getElementById('deletebtn-publish');
+
+        var deleteform = document.forms['delete-publish']
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            publishId = button.data('idd')
+
+        })
+        var saveAuthor = document.getElementById('saveAuthor');
+        saveAuthor.addEventListener("click", () => {
+            var date = new Date($('#time').val());
+            console.log(date)
+            day = date.getDate();
+            month = date.getMonth() + 1;
+            year = date.getFullYear();
+            document.getElementById("time_public").value = [year, month, day].join('-');
+            console.log(document.getElementById("time_public").value)
+        })
+    })
+    function price_displayy(){
+        var price_output  = document.getElementById('price_output').value;
+        var percent_sale  = document.getElementById('percent_sale').value;
+        document.getElementById('price_display').value = Number(price_output) * (Number(percent_sale)+1)
+        }
+</script>

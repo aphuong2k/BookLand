@@ -1,0 +1,174 @@
+<div class="page-content bg-white">
+    <!-- contact area -->
+    <div class="content-block">
+        <!-- Browse Jobs -->
+        <section class="content-inner bg-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4 m-b30">
+                        <div class="sticky-top">
+                            <div class="shop-account">
+                                <div class="account-detail text-center">
+                                    <div class="my-image">
+                                        <a href="javascript:void(0);">
+                                            <img alt="" src="/images/avatar/{{user.avatar}}" class="anhdaidien">
+                                        </a>
+                                    </div>
+                                    <div class="account-title">
+                                        <div class="">
+                                            <h4 class="m-b5"><a href="javascript:void(0);">{{user.name}}</a></h4>
+                                        </div>
+                                    </div>
+                                    <form action="/profile/upload-image" method="POST" encType="multipart/form-data">
+                                        <input type="file" name="avatar" accept="image/*"
+                                            style="    margin-top: 10px;padding-left: 30px;width:100%">
+                                        <input type="submit" class="btn btn-primary" style="margin-top: 20px;">
+                                    </form>
+                                </div>
+                                {{#each errors}}
+                                <div class="alert alert-danger">{{this}}</div>
+                                {{/each}}
+                                <ul class="account-list">
+                                    <li>
+                                        <a href="/profile" class="active"><i class="far fa-user" aria-hidden="true"></i>
+                                            <span>Profile</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/list-order"><i class="flaticon-shopping-cart-1" aria-hidden="true"></i>
+                                            <span>List Order</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/profile/address-book"><i class="far fa-id-card"
+                                                aria-hidden="true"></i>
+                                            <span>Adress Book</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/user/shop"><i class="fa fa-briefcase" aria-hidden="true"></i>
+                                            <span>Shop</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/profile/change-password"><i class="fa fa-key" aria-hidden="true"></i>
+                                            <span>Change Password</span></a>
+                                    </li>
+                                    <li>
+                                        <form action="/auth/logout" method="post">
+                                            <button type="submit"
+                                                style="    border: none;background: white;width: 100%;text-align: left;"><a
+                                                    href=""><i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                                                    <span>Log Out</span></a></button>
+                                        </form>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-8 m-b30">
+                        {{#each errors_details}}
+                        <div class="alert alert-danger">{{this}}</div>
+                        {{/each}}
+                        {{#each success}}
+                        <div class="alert alert-success">{{this}}</div>
+                        {{/each}}
+                        <div class="shop-bx-title clearfix">
+                            <h5 class="text-uppercase">Detail Order</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="modal-body">
+                                    <div class="table-responsive">
+                                        <table class="table "
+                                            style="width:100% ; text-align : center ; color:black !important">
+                                            <thead>
+                                                <tr>
+                                                    <th>Cardinal numbers</th>
+                                                    <th>Product Name</th>
+                                                    <th>Image</th>
+                                                    <th>Quantity</th>
+                                                    <th>Price($)</th>
+                                                    <th>Total($)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="myTable">
+                                                {{#each orderProductDetail}}
+                                                <tr>
+                                                    <td>{{sum @index 1}}</td>
+                                                    <td>{{this.product_name}}</td>
+                                                    <td class="product-item-img"><img
+                                                            src="/images/products/{{this.image}}" alt=""
+                                                            style="border-style: none;height: 99.24px;max-width: 65.9px;object-fit: cover;vertical-align: middle;">
+                                                    </td>
+                                                    <td>{{this.quantity}}</td>
+                                                    <td>{{this.price_output}}</td>
+                                                    <td></td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </p>
+                                </div>
+                                {{#each orderDetail}}
+                                <div class="row mg-5">
+                                    <div class="col-lg-6 col-md-6">
+                                        <table class="table-bordered check-tbl mb-4">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Order Subtotal</td>
+                                                    <td class="product-price">${{this.total}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Shipping</td>
+                                                    <td>Free Shipping</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Delivery</td>
+                                                    <td class="product-price">{{this.delivery}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Payment</td>
+                                                    <td class="product-price">{{this.payment}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td class="product-price-total">${{this.total}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <table class="table-bordered check-tbl mb-4">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td class="product-price">{{this.name}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Number phone</td>
+                                                    <td>{{this.phone}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Address</td>
+                                                    <td class="product-price">{{this.content}},{{this.address}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </section>
+    <!-- Browse Jobs END -->
+</div>
+</div>
+<script>
+    var rowCount = document.getElementById("myTable").rows.length;
+    for (var i = 0; i < rowCount; i++) {
+        document.getElementById("myTable").rows[i].cells[5].innerHTML = Number(document.getElementById("myTable").rows[i].cells[3].innerHTML) * Number(document.getElementById("myTable").rows[i].cells[4].innerHTML)
+    }
+</script>

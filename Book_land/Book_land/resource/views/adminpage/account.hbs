@@ -1,0 +1,292 @@
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+
+        <div class="search-box">
+            <form action="/admin/account/search" name="myInput" method="get"><i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here..." name="iduser" id="myInput">
+            </form>
+        </div>
+
+        <img src="images/profile.jpg" alt="">
+    </div>
+
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                <span class="text">Account</span>
+
+            </div>
+
+            <div>
+                <div class="col-lg-12">
+                    <button class="btn btn-primary btnhover" data-bs-toggle="modal" data-bs-target="#delete_author"
+                        style="float: right;margin-right:10px"><i class="fa-solid fa-trash"
+                            style="margin-right: 5px;font-size: 20px;color:white"></i> Recycle
+                        Bin({{this.totalDelete}})</i></button>
+                    <div class="table-responsive">
+                        <table class="table "
+                            style="width:100% ; text-align : center ; color:var(--text-color) !important;border-color:var(--text-color)">
+                            <thead>
+                                <tr>
+
+                                    <th>Count</th>
+                                    <th>Account Id</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Number Phone</th>
+                                    <th>Role</th>
+                                    <th>Create At</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="myTable">
+                                {{#each account}}
+                                <tr>
+                                    <td>{{sum @index 1}}</td>
+                                    <td>{{this.account_id}}</td>
+                                    <td>{{this.name}}</td>
+                                    <td>{{this.email}}</td>
+                                    <td>{{this.phone}}</td>
+                                    <td>
+                                        <select name="role" id="">
+                                            <option value="{{this.role}}" selected hidden></option>
+                                            <option value="1">User</option>
+                                            <option value="2">Admin</option>
+                                        </select>
+                                    </td>
+                                    <input type="hidden" class="status" value="{{this.role}}">
+                                    <td>{{this.create_at}}</td>
+                                    <td>
+                                        <a href="/admin/account/detail/{{this.account_id}}" class="btn btn-link"><i
+                                                class="fa-solid fa-eye"></i></a>
+                                        <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                            data-idd="{{this.account_id}}" data-bs-target="#ChangeRole"><i
+                                                class="fa fa-exchange"></i></a>
+                                        <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                            data-idd="{{this.account_id}}" data-bs-target="#Deactivate"><i
+                                                class="fa-solid fa-xmark"></i></a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="ChangeRole" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Change Role</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to change account'role ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="ChangeRolebtn">Change</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="back" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Back Account</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to back this account ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="back-account">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="delete_author" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Recycle Bin</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table "
+                                    style="width:100% ; text-align : center ; color:black !important">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Count</th>
+                                            <th>Account Id</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Number Phone</th>
+                                            <th>Role</th>
+                                            <th>Create At</th>
+                                            <th>Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myTablee">
+                                        {{#each delete}}
+                                        <tr>
+                                            <td>{{sum @index 1}}</td>
+                                            <td>{{this.account_id}}</td>
+                                            <td>{{this.name}}</td>
+                                            <td>{{this.email}}</td>
+                                            <td>{{this.phone}}</td>
+                                            <td id="rolee">
+                                                {{!-- <select name="rolee" id="">
+                                                    <option value="{{this.role}}" selected hidden></option>
+                                                    <option value="2">Admin</option>
+                                                    <option value="3">User</option>
+                                                </select> --}}
+                                            </td>
+                                            <input type="hidden" class="statuss" value="{{this.role}}">
+                                            <td>{{this.create_at}}</td>
+                                            <td>
+                                                <a href="/admin/account/detail/{{this.account_id}}" class="btn btn-link"><i
+                                                        class="fa-solid fa-eye"></i></a>
+                                                <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                                    data-idd="{{this.account_id}}" data-bs-target="#back"><i
+                                                        class="fa-solid fa-xmark"></i></a>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade" id="Deactivate" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Change Status</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to deactivate this account ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="Deactivatebtn">Deactivate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="annou" value="{{#each success}}{{this}}{{/each}}">
+            <form action="" name="ChangeRolebtn-form" method="post">
+                <input type="hidden" name="role" id="statusOrder">
+            </form>
+            <form action="" name="Deactivate-form" method="post">
+            </form>
+            <input type="hidden" value="{{total}}" id="total">
+            <input type="hidden" value="{{page}}" id="page">
+            <input type="hidden" value="{{name}}" id="name_link">
+            <input type="hidden" value="{{user}}" id="user">
+            <div class="pagination">
+                <ul>
+                    <!--pages or li are comes from javascript -->
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var AccountId;
+        var ChangeRolebtn = document.getElementById('ChangeRolebtn');
+        var ChangeRolebtnform = document.forms['ChangeRolebtn-form']
+        var Deactivatebtn = document.getElementById('Deactivatebtn');
+        var Deactivatebtnform = document.forms['Deactivate-form']
+        var backbtn = document.getElementById('back-account');
+        $('#ChangeRole').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            AccountId = button.data('idd')
+        })
+        $('#Deactivate').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            AccountId = button.data('idd')
+        })
+        $('#back').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            AccountId = button.data('idd')
+        })
+        ChangeRolebtn.onclick = function () {
+            ChangeRolebtnform.action = '/admin/account/update/' + AccountId;
+            ChangeRolebtnform.submit();
+        }
+        Deactivatebtn.onclick = function () {
+            Deactivatebtnform.action = '/admin/account/delete/' + AccountId;
+            Deactivatebtnform.submit();
+        }
+        backbtn.onclick = function () {
+            Deactivatebtnform.action = '/admin/account/back/' + AccountId;
+            Deactivatebtnform.submit();
+        }
+
+        if (document.getElementById("annou").value != '') {
+            Swal.fire({
+                text: document.getElementById('annou').value,
+                icon: 'success',
+                timer: 1000,
+                showConfirmButton: false,
+            }).then(function () {
+                window.location = window.location
+            })
+        }
+    })
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var addbtn = document.getElementsByClassName('status');
+        var addbtnn = document.getElementsByClassName('statuss');
+        for (var i = 0; i < addbtn.length; i++) {
+            if (addbtn[i].value == '1') {
+                document.getElementsByName('role')[i].options[0].innerHTML = 'User'
+            }
+            if (addbtn[i].value == '2') {
+                document.getElementsByName('role')[i].options[0].innerHTML = 'Admin'
+            }
+        }
+        for (var i = 0; i < addbtnn.length; i++) {
+            if (addbtnn[i].value == '1') {
+                document.getElementById("myTablee").rows[i].cells[5].innerHTML = 'User'
+            }
+            if (addbtnn[i].value == '2') {
+                document.getElementById("myTablee").rows[i].cells[5].innerHTML = 'Admin'
+            }
+        }
+        $("table tr a").on('click', function (e) {
+            var a = $(this).closest('td').parent()[0].sectionRowIndex;
+            // document.getElementById("myTable").rows[a].cells[3].querySelector('select').value
+            document.getElementById('statusOrder').value = document.getElementById("myTable").rows[a].cells[5].querySelector('select').value
+        });
+    })
+
+</script>

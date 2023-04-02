@@ -1,0 +1,121 @@
+
+<div class="page-content bg-white">
+		<!-- contact area -->
+        <div class="content-block">
+			<!-- Browse Jobs -->
+			<section class="content-inner bg-white">
+				<div class="container">
+					<div class="row">
+						<div class="col-xl-3 col-lg-4 m-b30">
+							<div class="sticky-top">
+								<div class="shop-account">
+									<div class="account-detail text-center">
+										<div class="my-image">
+											<a href="javascript:void(0);">
+												<img alt="" src="/images/avatar/{{user.avatar}}" class="anhdaidien">											
+											</a>
+										</div>
+										<div class="account-title">
+											<div class="">
+												<h4 class="m-b5"><a href="javascript:void(0);">{{user.name}}</a></h4>
+											</div>
+										</div>
+										<form action="/profile/upload-image" method="POST" encType="multipart/form-data">
+											<input type="file" name="avatar" accept="image/*" style="    margin-top: 10px;padding-left: 30px;width:100%">
+											<input type="submit" class="btn btn-primary" style="margin-top: 20px;">
+										</form>
+									</div>
+									{{#each errors}}
+										<div class="alert alert-danger">{{this}}</div>
+									{{/each}}
+									<ul class="account-list">
+										<li>
+											<a href="/profile" class="active"><i class="far fa-user" aria-hidden="true"></i> 
+											<span>Profile</span></a>
+										</li>
+										<li>
+											<a href="/list-order"><i class="flaticon-shopping-cart-1" aria-hidden="true"></i> 
+											<span>List Order</span></a>
+										</li>
+										<li>
+											<a href="/profile/address-book"><i class="far fa-id-card" aria-hidden="true"></i> 
+											<span>Adress Book</span></a>
+										</li>
+										<li>
+											<a href="/user/shop"><i class="fa fa-briefcase" aria-hidden="true"></i> 
+											<span>Shop</span></a>
+										</li>
+										<li>
+											<a href="/profile/change-password"><i class="fa fa-key" aria-hidden="true"></i> 
+											<span>Change Password</span></a>
+										</li>
+										<li>
+											<form action="/auth/logout" method="post">
+												<button type="submit" style="    border: none;background: white;width: 100%;text-align: left;"><a href=""><i class="fas fa-sign-out-alt" aria-hidden="true"></i> 
+											<span>Log Out</span></a></button>
+											</form>
+										
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						    <div class="col-xl-9 col-lg-8 m-b30">
+									<div class="shop-bx-title clearfix">
+										<h5 class="text-uppercase">Address Edit</h5>
+									</div>
+									{{#each address_detail}}
+									<form action="/profile/address-book/update" class="shop-form" method="post">
+										<div class="widget">
+											<div class="form-group">
+												<select name="province" id="province" class="form-control" >
+													  <option value="{{this.id_province}}" selected hidden>{{../province}}</option>
+												</select>	
+											</div>
+											<div class="form-group">
+												<select name="district" id="district" class="form-control" >
+													<option value="{{this.id_district}}" selected hidden>{{../district}}</option>
+												</select>	
+											</div>
+											<div class="form-group">
+												<select name="town" id="town" class="form-control" >
+													<option value="{{this.id_town}}" selected hidden>{{../town}}</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<input type="text" name="name" class="form-control" placeholder="Name*" value="{{this.name}}" required>
+											</div>  
+											<div class="form-group">
+												<input type="text" name="phone" class="form-control" placeholder="Phone*" value="{{this.phone}}" required>
+											</div>
+											<div class="form-group">
+												<input type="text" name="content" class="form-control" placeholder="Content*" value="{{this.content}}" required>
+											</div>
+											<div class="form-group">
+												<input type="hidden" name="address" id="address"class="form-control" placeholder="Address*" value="{{this.address}}" required>
+											</div>
+											<div class="form-group">
+												<input type="hidden" name="id_address" class="form-control"  value="{{this.account_address_id}}">
+											</div>
+									{{/each}}
+											<button class="btn btn-primary btnhover" type="submit" onclick="myFunction()">Save change</button>		
+										</div>
+                                    </form>   
+						    </div>    
+						</div>
+					</div>
+				</div>
+			</section>
+            <!-- Browse Jobs END -->
+		</div>
+    </div>
+<script>
+    function myFunction() {
+        var province = document.getElementById("province").options[document.getElementById("province").selectedIndex ].text
+        var district = document.getElementById("district").options[document.getElementById("district").selectedIndex ].text
+        var town = document.getElementById("town").options[document.getElementById("town").selectedIndex ].text
+        document.getElementById("address").value = province + "-" + district + "-" + town;
+    }
+</script>
+
+

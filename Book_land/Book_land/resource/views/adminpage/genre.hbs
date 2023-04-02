@@ -1,0 +1,281 @@
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+
+        <div class="search-box">
+            <form action="/admin/genre/search" name="myInput" method="get"><i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here..." name="name" id="myInput">
+            </form>
+        </div>
+
+        <img src="images/profile.jpg" alt="">
+    </div>
+
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <span class="text">Genre</span>
+            </div>
+
+            <div>
+                <div class="col-lg-12">
+                    <button class="btn btn-primary btnhover" data-bs-toggle="modal" data-bs-target="#newAddress"
+                        style="float: right;">Add New genre</button>
+                    <button class="btn btn-primary btnhover" data-bs-toggle="modal" data-bs-target="#delete_genre"
+                        style="float: right;margin-right:10px"><i class="fa-solid fa-trash"
+                            style="margin-right: 5px;font-size: 20px;color:white"></i> Recycle
+                        Bin({{this.totalDelete}})</i></button>
+                    <div class="table-responsive">
+                        <table class="table "
+                            style="width:100% ; text-align : center ; color:var(--text-color) !important">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Category Name</th>
+                                    <th>Create At</th>
+                                    <th>Create By</th>
+                                    <th>Update At</th>
+                                    <th>Update By</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myTable">
+                                {{#each genre}}
+                                <tr>
+                                    <td>{{this.genre_id}}</td>
+                                    <td>{{this.genre_name}}</td>
+                                    <td>{{this.name_category}}</td>
+                                    <td>{{this.create_at}}</td>
+                                    <td>{{this.create_by}}</td>
+                                    <td>{{this.update_at}}</td>
+                                    <td>{{this.update_by}}</td>
+                                    <td>
+                                        <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                            data-bs-target="#update{{this.genre_id}}"><i
+                                                class="fa-regular fa-pen-to-square"></i></a>
+                                        <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                            data-idd="{{this.genre_id}}" data-bs-target="#exampleModal"><i
+                                                class="fa-solid fa-trash-can"></i></a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="newAddress" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Address</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/admin/genre" class="shop-form" method="post">
+                                <div class="widget">
+                                    <div class="form-group">
+                                        <input type="text" name="name" class="form-control" placeholder="Name genre*"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <select name="id_ctg" class="form-control">
+                                            {{#each category}}
+                                            <option value="{{this.id_category}}">{{this.name_category}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save genre</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade" id="delete_genre" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Recycle Bin</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table " style="width:100% ; text-align : center ; color:black !important">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Genre Name</th>
+                                            <th>Category Name</th>
+                                            <th>Update At</th>
+                                            <th>Update By</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myTable">
+                                        {{#each delete}}
+                                        <tr>
+                                            <td>{{this.genre_id}}</td>
+                                            <td>{{this.genre_name}}</td>
+                                            <td>{{this.name_category}}</td>
+                                            <td>{{this.update_at}}</td>
+                                            <td>{{this.update_by}}</td>
+                                            <td>
+                                                <a href="" class="btn btn-link" data-bs-toggle="modal"
+                                                    data-idd="{{this.genre_id}}" data-bs-target="#back"><i
+                                                        class="fa fa-exchange"></i></a>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade" id="back" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Back Genre</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to back this genre ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="back-genre">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete genre</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to delete this genre ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="deletebtn-genre">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{#each genre}}
+            <div class="modal fade" id="update{{this.genre_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Update Genre</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/admin/genre/update" class="shop-form" method="post">
+                                <div class="widget">
+                                    <div class="form-group">
+                                        <input type="text" name="name" class="form-control" placeholder="Name genre*"
+                                            value="{{this.genre_name}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <select name="id_ctg" class="form-control">
+                                            <option value="{{this.id_category}}" selected disabled hidden>
+                                                {{this.name_category}}</option>
+                                            {{#each ../category}}
+                                            <option value="{{this.id_category}}">{{this.name_category}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" name="id" class="form-control" value="{{this.genre_id}}">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save genre</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {{/each}}
+            <input type="hidden" id="annou" value="{{#each success}}{{this}}{{/each}}">
+            <input type="hidden" value="{{total}}" id="total">
+            <input type="hidden" value="{{page}}" id="page">
+            <input type="hidden" value="{{name}}" id="name_link">
+            <input type="hidden" value="{{user}}" id="user">
+            <form name="delete-genre" method="post"></form>
+            <div class="pagination">
+                <ul>
+                    <!--pages or li are comes from javascript -->
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var genreId;
+        var deletebtn = document.getElementById('deletebtn-genre');
+        var backbtn = document.getElementById('back-genre');
+        var deleteform = document.forms['delete-genre']
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            genreId = button.data('idd')
+
+        })
+        $('#back').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            genreId = button.data('idd')
+        })
+        deletebtn.onclick = function () {
+            deleteform.action = '/admin/genre/delete/' + genreId;
+            deleteform.submit();
+        }
+        backbtn.onclick = function () {
+            deleteform.action = '/admin/genre/back/' + genreId;
+            deleteform.submit();
+        }
+        if (document.getElementById("annou").value != '') {
+            Swal.fire({
+                text: document.getElementById('annou').value,
+                icon: 'success',
+                timer: 1000,
+                showConfirmButton: false,
+            }).then(function () {
+                window.location = window.location
+            })
+        }
+    })
+</script>

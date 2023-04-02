@@ -1,0 +1,125 @@
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+    </div>
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                {{#each account}}
+                <span class="text">Email : {{this.email}}</span>
+                {{/each}}
+
+            </div>
+
+            <div class="product-description tabs-site-button">
+                <ul class="nav nav-tabs">
+                    <li><a data-bs-toggle="tab" href="#graphic-design-1" class="active" style="color: var(--text-color) !important;">Detail Account</a>
+                    </li>
+                    <li><a data-bs-toggle="tab" href="#developement-1" style="color: var(--text-color) !important;">Order History</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="graphic-design-1" class="tab-pane show active">
+                        <div class="modal-body">
+								<table class="table-bordered check-tbl mb-4" id="last" style="border-color:var(--text-color)">
+									<tbody>
+                                        {{#each account}}
+										<tr>
+											<td>Id</td>
+											<td>{{this.account_id}}</td>
+										</tr>
+										<tr>
+											<td>Name</td>
+											<td>{{this.name}}</td>
+										</tr>
+										<tr>
+											<td>Email</td>
+											<td>{{this.email}}</td>
+										</tr>
+										<tr>
+											<td>Phone</td>
+											<td>{{this.phone}}</td>
+										</tr>
+                                        <tr>
+											<td>Create At</td>
+											<td>{{this.create_at}}</td>
+										</tr>
+                                        <tr>
+											<td>Create By</td>
+											<td>{{this.create_by}}</td>
+										</tr>
+                                        <tr>
+											<td>Update At</td>
+											<td>{{this.update_at}}</td>
+										</tr>
+                                        <tr>
+											<td>Update By</td>
+											<td>{{this.update_by}}</td>
+										</tr>
+                                         {{/each}}
+									</tbody>
+								</table>
+                            </p>
+                        </div>
+                    </div>
+                    <div id="developement-1" class="tab-pane">
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table " style="color: var(--text-color) !important;text-align:center">
+                                    <thead>
+                                        <tr>
+                                            <th>Count</th>
+                                            <th>Date Order</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myTablee">
+                                        {{#each order}}
+                                        <tr>
+                                            <td>{{sum @index 1}}</td>
+                                            <td>{{this.create_at}}</td>
+                                            <td></td>
+                                            <input type="hidden" class="status" value="{{this.status}}">
+                                            <td>{{this.total}}</td>
+                                            <td>
+                                                <a href="/admin/order/{{this.order_id}}" class="btn btn-link"><i
+                                                        class="fa-solid fa-eye"></i></href=>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<script>
+    var addbtn = document.getElementsByClassName('status');
+        console.log(addbtn.length)
+        for (var i = 0; i < addbtn.length; i++) {
+            if (addbtn[i].value == '1') {
+                document.getElementById("myTablee").rows[i].cells[2].innerHTML = 'Đang chờ xác nhận đơn hàng'
+            }
+            if (addbtn[i].value == '2') {
+                document.getElementById("myTablee").rows[i].cells[2].innerHTML = 'Đang đóng gói đơn hàng'
+            }
+            if (addbtn[i].value == '3') {
+                document.getElementById("myTablee").rows[i].cells[2].innerHTML = 'Đang giao hàng'
+            }
+            if (addbtn[i].value == '4') {
+                document.getElementById("myTablee").rows[i].cells[2].innerHTML = 'Đã hoàn thành'
+            }
+            if (addbtn[i].value == '0') {
+                document.getElementById("myTablee").rows[i].cells[2].innerHTML = 'Đã hủy đơn hàng'
+            }
+        }
+
+</script>

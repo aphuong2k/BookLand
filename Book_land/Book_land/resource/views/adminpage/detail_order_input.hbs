@@ -1,0 +1,56 @@
+<section class="dashboard">
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                {{#each input_order}}
+                <span class="text">Input Order Id : {{this.id_order_input}}</span>
+                {{/each}}
+
+            </div>
+
+            <div>
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table "
+                            style="width:100% ; text-align : center ; color:var(--text-color) !important">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Image</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th>Create At</th>
+                                    <th>Create By</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myTable">
+                                {{#each detail_input_order}}
+                                <tr>
+                                    <td>{{this.product_id}}</td>
+                                    <td>{{this.product_name}}</td>
+                                    <td><img alt="" class="media-object" src="/images/products/{{this.image}}" style="max-width:35%"></td>
+                                    <td>{{this.quantity}}</td>
+                                    <td>{{this.price_input}}$</td>
+                                    <td>{{mul this.quantity this.price_input}}$</td>
+                                    <td>{{this.create_at}}</td>
+                                    <td>{{this.create_by}}</td>
+                                </tr>
+                                {{/each}}
+                                <tr>
+                                    <th>Sum</th>
+                                    {{#each input_order}}
+                                    <td colspan="7">{{this.total}}($)</td>
+                                    {{/each}}
+                                </tr>
+                            </tbody>
+                            <a href="/admin/list-input-order"><button class="btn btn-primary btnhover" style="float: left;margin-top:10px">Back</button></a>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

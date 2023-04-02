@@ -1,0 +1,172 @@
+<div class="page-content">
+			<!-- inner page banner -->
+			<div class="dz-bnr-inr overlay-secondary-dark dz-bnr-inr-sm" style="background-image:url(images/background/bg3.jpg);">
+				<div class="container">
+					<div class="dz-bnr-inr-entry">
+						<h1>Checkout</h1>
+						<nav aria-label="breadcrumb" class="breadcrumb-row">
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html"> Home</a></li>
+								<li class="breadcrumb-item">Checkout</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<!-- inner page banner End-->
+			
+			<!-- contact area -->
+			<section class="content-inner-1">
+				<!-- Product -->
+				<div class="container">
+					<form class="shop-form">
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+                                <a href="/profile/address-book" class="btn btn-primary btnhover mb-3">Ship to a different address <i class="fa fa-arrow-circle-o-down"></i></a>	
+                                <select name="" id="address" class="form-control">
+									{{#each address_default}}
+                                    <option value="{{this.account_address_id}}" selected hidden>{{this.name}} | {{this.phone}} | {{this.content}} | {{this.address}}</option>
+                                    {{/each}}
+                                    {{#each address}}
+                                    <option value="{{this.account_address_id}}" >{{this.name}} | {{this.phone}} | {{this.content}} | {{this.address}}</option>
+                                    {{/each}}
+                                </select>
+                                <br>
+								<div class="form-group">
+									<textarea class="form-control" placeholder="Notes about your order, e.g. special notes for delivery" id="notex"></textarea>
+								</div>
+							
+							</div>
+						</div>
+					</form>
+					<div class="dz-divider bg-gray-dark text-gray-dark icon-center  my-5"><i class="fa fa-circle bg-white text-gray-dark"></i></div>
+					<div class="row">
+						<div class="col-lg-7">
+							<div class="widget">
+								<h4 class="widget-title">Your Order</h4>
+								<table class="table-bordered check-tbl">
+									<thead class="text-center">
+										<tr>
+											<th>IMAGE</th>
+											<th>PRODUCT NAME</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+											<th>TOTAL</th>
+										</tr>
+									</thead>
+									<tbody class="input" style="text-align:center ;">
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="col-lg-5">
+							<form class="shop-form widget">
+								<h4 class="widget-title">Order Total</h4>
+								<table class="table-bordered check-tbl mb-4" id="last">
+									<tbody>
+										{{!-- <tr>
+											<td>Order Subtotal</td>
+											<td class="product-price">$125.96</td>
+										</tr> --}}
+										<tr>
+											<td>Shipping</td>
+											<td>Free Shipping</td>
+										</tr>
+										{{!-- <tr>
+											<td>Coupon</td>
+											<td class="product-price">$28.00</td>
+										</tr> --}}
+										<tr>
+											<td>Total</td>
+											<td class="product-price-total"></td>
+										</tr>
+									</tbody>
+								</table>
+								<h4 class="widget-title">Payment Method</h4>
+								<div class="form-group">
+									<select class="default-select" id="pay">
+                                        <option value="" hidden selected>Cash on Delivery</option>
+										<option value="Credit Card">Credit Card</option>
+										<option value="COD">COD</option>
+									</select>	
+								</div>
+								<div class="form-group">
+									<select class="default-select" id="dely">
+                                        <option value="" hidden selected>Shipping Option</option>
+										<option value="GHN Express">GHN Express</option>
+										<option value="GIAO HANG TIET KIEM">GIAO HANG TIET KIEM</option>
+									</select>	
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary btnhover" type="button" onclick="checkout_btn()">Place Order Now </button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- Product END -->
+			</section>
+			<!-- contact area End--> 
+            <form action="/checkout" method="post" name="checkout">
+                <input type="hidden" name="detail" id="detail">
+                <input type="hidden" name="total" id="total">
+                <input type="hidden" name="address" id="address_id">
+				<input type="hidden" name="delivery" id="delivery">
+				<input type="hidden" name="payment" id="payment">
+				<input type="hidden" name="note" id="note">
+            </form>
+		</div>
+        <script>
+            var myArray = sessionStorage.getItem('myArray');
+            var detail = JSON.parse(myArray)
+            console.log(detail);
+
+            let table = document.querySelector(".input");
+        for (let obj of detail) {
+            let tr = table.insertRow();
+            var a = tr.insertCell(0)
+            a.className = 'product-item-img'
+            a.innerHTML = "<img src='"+ obj.image +"' style='width:69px;height:113.28px;object-fit:cover'>";
+            tr.insertCell(1).textContent = obj.name;
+            tr.insertCell(2).textContent = obj.price;
+            tr.insertCell(3).textContent = obj.quantity;
+            tr.insertCell(4).textContent = obj.total;
+        }
+        var total = 0
+		for(var i = 0;i<detail.length;i++){
+				total+=Number(detail[i].total)
+		}
+		document.getElementById("last").rows[1].cells[1].innerHTML = total + '$';
+		function checkout_btn(){
+			//var allproduct = JSON.stringify(detail);
+			document.getElementById("detail").value = myArray
+			document.getElementById("total").value = total
+			document.getElementById("address_id").value = document.getElementById("address").value
+			document.getElementById("delivery").value = document.getElementById("dely").value 
+			document.getElementById("payment").value = document.getElementById("pay").value
+			document.getElementById("note").value = document.getElementById("notex").value
+			//var deletebtn = document.getElementById('deletebtn-product');
+			if(Number(document.getElementById("last").rows[1].cells[1].innerHTML) == 0){
+				Swal.fire({
+					text: 'Please choose product !',
+					icon: 'error',
+					timer: 1000,
+					showConfirmButton: false,
+				})
+			}else{
+				if(document.getElementById("pay").value == '' || document.getElementById("dely").value == ''){
+					Swal.fire({
+					text: 'Please choose delivery or payment !',
+					icon: 'error',
+					timer: 1000,
+					showConfirmButton: false,
+					})
+				}else{
+					var checkoutform = document.forms['checkout']
+					sessionStorage.clear();
+					checkoutform.submit();
+				}
+			}
+		}
+        </script>

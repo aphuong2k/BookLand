@@ -1,0 +1,70 @@
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+
+        <div class="search-box">
+            <form action="/admin/list-input-order/search" name="myInput" method="get"><i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here..." name="idorder" id="myInput">
+            </form>
+        </div>
+
+        <img src="images/profile.jpg" alt="">
+    </div>
+
+    <div class="dash-content">
+
+        <div class="activity">
+            <div class="title">
+                <span class="text">List Input Order</span>
+
+            </div>
+
+            <div>
+                <div class="col-lg-12">
+                    <a href="/admin/input-order"><button class="btn btn-primary btnhover" style="float: right;">Add New
+                            Input Order</button></a>
+                    <div class="table-responsive">
+                        <table class="table "
+                            style="width:100% ; text-align : center ; color:var(--text-color) !important">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Total</th>
+                                    <th>Note</th>
+                                    <th>Create At</th>
+                                    <th>Create By</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myTable">
+                                {{#each input_order}}
+                                <tr>
+                                    <td>{{this.id_order_input}}</td>
+                                    <td>{{this.total}}</td>
+                                    <td>{{this.note}}</td>
+                                    <td>{{this.create_at}}</td>
+                                    <td>{{this.create_by}}</td>
+                                    <td>
+                                        <a href="/admin/list-input-order/{{this.id_order_input}}" class="btn btn-link">
+                                            <i class="fas fa-info-circle" style="font-size:25px ;"></i></a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" value="{{total}}" id="total">
+            <input type="hidden" value="{{page}}" id="page">
+            <input type="hidden" value="{{name}}" id="name_link">
+            <input type="hidden" value="{{user}}" id="user">
+            <div class="pagination">
+                <ul>
+                    <!--pages or li are comes from javascript -->
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
